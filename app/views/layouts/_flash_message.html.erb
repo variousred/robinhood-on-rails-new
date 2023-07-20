@@ -1,0 +1,10 @@
+<% %w[success info warning danger].each do |type| %>
+  <% if flash[type].present? %>
+    <div class="alert alert-dismissible alert-<%= type %>" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong><%= flash[type] %></strong>
+    </div>
+  <% end %>
+<% end %>

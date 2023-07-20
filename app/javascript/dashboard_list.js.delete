@@ -1,0 +1,9 @@
+import FundamentalsTooltip from "fundamentals_tooltip"
+
+export default function DashboardList(element) {
+  console.log("DashboardList", element)
+  FundamentalsTooltip(element)
+  SortableTables(element)
+  HideOnClick(element)
+  PreventDeferredLoader(element)
+}

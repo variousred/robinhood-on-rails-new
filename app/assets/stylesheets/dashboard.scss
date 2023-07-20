@@ -1,0 +1,49 @@
+// @use 'variables';
+
+#dashboard {
+  // background-color: $dark_grey;
+
+  .content {
+    // background-color: $black;
+
+    #portfolios {
+      margin-bottom: 75px;
+
+      .subtext {
+        color: $light_grey;
+      }
+
+      h3 {
+        font-size: 35px;
+        margin: 0;
+      }
+    }
+
+    #order-form {
+      .form-group {
+        width: 100%;
+        input, select {
+          width: 100%;
+          &[type=submit] {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .watchlist-content, .crypto-watchlist-content {
+      #quote-form, #back {
+        display: none;
+      }
+
+      .quotes {
+        .add-to-watchlist { 
+          display: none;
+        }
+        .remove-from-watchlist { 
+          display: block;
+        }
+      }
+    }
+  }
+}

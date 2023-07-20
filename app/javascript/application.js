@@ -1,0 +1,12 @@
+// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails"
+import "@jquery"
+import "jquery-ui"
+import "fundamentals_tooltip"
+import "controllers"
+import "deferred_loader"
+import "bootstrap"
+// import "line_chart"
+// import "hide_on_click"
+// import "dashboard_list"
+import "channels"

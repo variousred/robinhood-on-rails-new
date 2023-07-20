@@ -1,0 +1,29 @@
+<% @portfolios.each do |p| %>
+  <div class="portfolio row" data-behavior="TooltipLoader">
+    <div class="col-xs-6 col-sm-4 value">
+      <div class="subtext">Total value</div>
+      <h3><%= price_display(p["extended_hours_equity"] || p["equity"]) %></h3>
+    </div>
+    <div class="col-xs-6 col-sm-4 return">
+      <div class="subtext">Today</div>
+      
+      <% data = {class: "enable-tooltip text-" + up_down(p["adjusted_equity_previous_close"], p["equity"])} %>
+
+      <% data.merge!({"data-toggle": "tooltip", title: change_display(p["equity"],p["extended_hours_equity"]) + " after hours"}) if !@market_open %>
+      <h3 <%= tag.attributes data %>>
+        <%= change_display p["adjusted_equity_previous_close"], p["equity"] %>
+      </h3>
+    </div>
+    <div class="col-xs-6 col-sm-4 cash">
+      <div class="subtext">Buying power</div>
+      <h3><%= price_display @buying_power %></h3>
+    </div>
+    <% if false # debug %>
+      <ul>
+        <% p.each do |k,v| %>
+          <li><%= "#{k}: #{v}" %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>

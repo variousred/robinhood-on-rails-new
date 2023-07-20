@@ -1,0 +1,70 @@
+<div class="row" id="positions_test">
+  <div class="list-dependencies" data-controller="dashboard-list" data-dashboard-list-target="dependencies"></div>
+  <div class="col-xs-12">
+    <table class="table sortable-table" data-sort_target=".investment">
+      <tr>
+        <th>Symbol</th>
+        <th>Shares</th>
+        <th class="text-end">Value</th>
+        <th>Today's return</th>
+        <th>Return</th>
+        <th>Return with sells</th>
+        <th class="text-end">Average cost</th>
+        <th class="text-end">Price/Share</th>
+        <th>Sell</th>
+      </tr>
+      <%= Time.now %>
+      <% data.each do |data| %>
+        <% symbol          = data["symbol"] %>
+        <% quantity        = data["quantity"] %>
+        <% current_price   = data['last_extended_hours_trade_price'] ||
+                             data['last_trade_price'] %>
+        <% value           = quantity.to_f * current_price.to_f %>
+        <% average_cost    = data["average_buy_price"].to_f %>
+        <% position_return = value - (average_cost.to_f * quantity.to_f) %>
+
+        <% return_class = "text-" + up_down(0, position_return) %>
+
+
+        <tr class="investment fundamentals-tooltip" >
+          <%# Symbol %>
+          <td><%= symbol %></td>
+
+          <%# Shares %>
+          <td><%= number_with_precision(quantity, 
+                  strip_insignificant_zeros: true,
+                  precision: 2) %>
+          </td>
+          
+          <%# Value %>
+          <td class="text-end">
+            <%= price_display2(quantity.to_f * current_price.to_f) %>
+          </td>
+
+          <%# Today's Return %>
+          <td>.</td>
+
+          <%# Return %>
+          <td class="text-end <%= return_class %>">
+            <%= price_display2(position_return) %>
+          </td>
+
+          <%# Return with sells %>
+          <td>.</td>
+
+          <%# Average cost %>
+          <td class="text-end">
+            <%= price_display2(average_cost) %>
+          </td>
+
+          <%# Price/Share %>
+          <td class="text-end"><%= price_display2(current_price) %></td>
+
+          <%# Sell %>
+          <td></td>
+        </tr>
+      <% end %>
+    </table>
+    <%= data[0] %>
+  </div>
+</div>

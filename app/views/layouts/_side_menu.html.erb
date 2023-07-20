@@ -1,0 +1,27 @@
+<% if user_logged_in_to_robinhood? %>
+  <div class="sidebar border border-right col-md-2 col-lg-2 p-0 bg-body-tertiary">
+    <div class="side-menu">
+      <div class="wrapper">
+        <div class="logo">
+          <%= link_to root_path do %>
+            <%= image_tag asset_path("robinhood_logo") %>
+          <% end %>
+        </div>
+        <div class="main-menu">
+          <div class="col-xs-12 no-padding">
+            <%= render "robinhood/quote_form" %>
+          </div>
+          <ul class="nav flex-column">
+            <li class="nav-item"><%= link_to "Portfolio", root_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Notifications", cards_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Orders", orders_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Dividends", dividends_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Transfers", transfers_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "API", api_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Log out", logout_path, class: "nav-link" %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

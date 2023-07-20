@@ -1,0 +1,7 @@
+<%= form_tag add_stock_list_path, class: "form-inline" do %>
+  <%= hidden_field_tag :group, group %>
+  <div class="form-group">
+    <%= text_field_tag :name, nil, placeholder: "Add a section folder", class: "form-control", required: true %>
+  </div>
+  <%= submit_tag "Add section", class: "hidden" %>
+<% end %>

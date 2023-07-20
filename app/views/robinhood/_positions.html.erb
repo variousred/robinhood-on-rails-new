@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="list-dependencies" data-controller="dashboard-list" data-dashboard-list-target="dependencies"></div>
+  <div class="col-xs-12">
+    <% @stock_lists.each do |list| %>
+      <div class="list-<%= list.id %>">
+        <% if list.name.present? %>
+          <h4>
+            <%= list.name %>
+            <small>
+              <%= link_to "x", delete_stock_list_path(id: list.id),
+                data: {turbo_method: :get, target: ".list-#{list.id}"},
+                class: "hide-on-click"%>
+            </small>
+          </h4>
+        <% else %>
+          default list
+        <% end %>
+        <table class="table sortable-table" data-id="<%= list.id %>" data-sort_target=".investment">
+          <tr>
+            <th>Symbol</th>
+            <th>Shares</th>
+            <th>Value</th>
+            <th>Today's return</th>
+            <th>Return</th>
+            <th>Return with sells</th>
+            <th>Average cost</th>
+            <th>Price/Share</th>
+            <th>Sell</th>
+          </tr>
+          <% list.instruments.each do |instrument| %>
+            <% symbol = instrument.symbol %>
+            <% data = @investments[symbol] %>
+            <% next unless data.present? %>
+            <% num_shares = data["quantity"].to_i %>
+            <tr class="investment fundamentals-tooltip" data-instrument_id="<%= instrument.id %>">
+              <td><%= stock_link(symbol, {class: "symbol", data:{ html: true, placement: :right}}) %></td>
+              <td class="num-shares"><%= num_shares %></td>
+              <td class="value">
+                <%= price_display data["value"] %>
+              </td>
+              <td class="change <%= "text-" + up_down(0, data["todays_return"]) %>">
+                <%= change_display(data["current_price"]*num_shares - data["todays_return"], data["current_price"]*num_shares) %>
+              </td>
+              <td class="return-held-shares <%= "text-" + up_down(0, data["shares_held_return"]) %>">
+                <%= change_display(data["shares_held_cost"], data["shares_held_cost"] + data["shares_held_return"]) %>
+              </td>
+              <td class="return-all-time <%= "text-" + up_down(0, data["all_time_return"]) %>">
+                <%= price_display data["all_time_return"] %>
+              </td>
+              <td class="avg-buy-price"><%= price_display data["average_buy_price"] %></td>
+              <td><%= price_display data["current_price"] %></td>
+              <td><%= render "robinhood/order_form_modal", symbol: data["symbol"], side: :sell, price: data["current_price"], num_shares: num_shares %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-xs-12">
+    <%= render "stock_list_form", group: :portfolio %>
+  </div>
+</div>

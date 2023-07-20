@@ -1,0 +1,113 @@
+<% if user_logged_in_to_robinhood? %>
+  <div id="dashboard">
+    <div class="col-md-10 content">
+      <div class="row">
+        <div class="col-xs-6">
+          <div id="markets" data-behavior="DeferredLoader" data-path="<%= markets_path %>" data-refresh="60"></div>
+        </div>
+        <div class="col-xs-6">
+          <div id="chart-controls" class="pull-right">
+            Chart range:
+            <%= turbo_frame_tag "day-chart" do %>
+              <%= link_to "Day", price_chart_path(interval: '5minute', span: 'day', type: 'portfolio'), data: { turbo_action: 'replace', turbo_frame: 'price-chart' } %>
+            <% end %>
+            <%= turbo_frame_tag "week-chart" do %>
+              <%= link_to "Week", price_chart_path(interval: '10minute', span: 'week', type: 'portfolio'), data: { turbo_action: 'replace', turbo_frame: 'price-chart' } %>
+            <% end %>
+            <%= turbo_frame_tag "month-chart" do %>
+              <%= link_to "Month", price_chart_path(interval: 'day', span: 'month', type: 'portfolio'), data: { turbo_action: 'replace', turbo_frame: 'price-chart' } %>
+            <% end %>
+            <%= turbo_frame_tag "year-chart" do %>
+              <%= link_to "Year", price_chart_path(interval: 'day', span: 'year', type: 'portfolio'), data: { turbo_action: 'replace', turbo_frame: 'price-chart' } %>
+            <% end %>
+            <%= turbo_frame_tag "all-chart" do %>
+              <%= link_to "All", price_chart_path(span: 'all', type: 'portfolio'), data: { turbo_action: 'replace', turbo_frame: 'price-chart' } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <turbo-frame id="price-chart">
+          <%= render('robinhood/price_chart', chart_data: @chart_data) %>
+        </turbo-frame>
+      </div>
+      <div class="row">
+        <turbo-frame id="portfolios">
+          <% if false %>
+            <div id="portfolios" data-behavior="DeferredLoader"
+            data-path="<%= portfolios_path %>" data-refresh="15"></div>
+          <% end %>
+          <%= render 'robinhood/portfolios' %>
+        </turbo-frame>
+      </div>
+      <ul class="nav nav-tabs col-12 col-md-auto mb-2 mb-md-0" data-behavior="SubMenu">
+        <li class="nav-item px-2" role="presentation">
+          <%= link_to "Portfolio", "#", data: {target: "#positions"}, class: "nav-link active" %>
+        </li>
+        <li class="nav-item px-2" role="presentation">
+          <%= link_to "Watchlist", "#", data: {target: ".dashboard-watchlist"}, class: "nav-link" %>
+        </li>
+        <li class="nav-item px-2" role="presentation">
+          <%= link_to "Crypto Watchlist", "#", data: {target: ".crypto-watchlist"}, class: "nav-link" %>
+        </li>
+      </ul>
+      <div data-controller="poller" data-poller-update-url-value="<%= positions_update_path %>">
+        <turbo-frame id="positions" src="<%= positions_path %>">
+          loading ...
+        </turbo-frame>
+        <p class="text-muted">Last update: <span id="time-elapsed">Just now</span></p>
+      </div>
+      <div class="row dashboard-watchlist sub-menu-tab">
+        <div class="watchlist-content" data-behavior="DeferredLoader" data-path="<%= watchlist_path %>" data-refresh="20"></div>
+      </div>
+      <div class="row crypto-watchlist sub-menu-tab">
+        <div class="crypto-watchlist-content" data-behvior="DeferredLoader" data-path="<%= crypto_watchlist_path %>" data-refresh="20"></div>
+      </div>
+    </div>
+  </div>
+  <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+  <div data-controller="positions">
+    <div id="positions_test">
+      foo
+    </div>
+  </div>
+<% else %>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>
+          Say
+          <span class="text-success">hello</span>
+          to your 
+          <span class="text-success">portfolio.</span>
+        </h1>
+        <p> Log in to your <%= link_to "Robinhood", "https://robinhood.com/referral/benjamc331/" %> account to access and manage your portfolio.</p>
+        <%= render "layouts/robinhood_login_form" %>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-xs-12">
+        <p>
+          See the project code and updates at
+          <span><%= link_to "github", "https://github.com/bcwik9/robinhood-on-rails" %></span>
+        </p>
+        <p>
+          Created with
+          <span class="fa fa-heart"></span>
+          by
+          <%= link_to "Ben Cwik", "http://bencwik.com" %>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <h3>Disclaimer</h3>
+        <p class="small">I am not affiliated with Robinhood or its associates. I am in no way responsible for any losses incurred through using this code or application. This app relies on Robinhood's unpublished, private API. It isn't recommended to use this since the API is private and can change unexpectedly at any time, and is not officially supported. Using any kind of unpublished API for investing is risky, and you should thoroughly review any code involving any kind of money or investment published on the web to ensure the creator isn't doing something malicious. It's your money, after all. Your safest bet is to use the official Robinhood phone app. Having said that, creating this app has been a lot of fun and I use it a lot more than I use the phone app.</p>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div class="list-dependencies" data-controller="dashboard-list">
+</div>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark">
+  <head>
+    <title>RobinhoodOnRailsNew</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= render "favicon" %>
+    <title>RobinhoodOnRails</title>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <%= render "layouts/flash_message" %>
+        <%= render "layouts/side_menu" %>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <%= yield %>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

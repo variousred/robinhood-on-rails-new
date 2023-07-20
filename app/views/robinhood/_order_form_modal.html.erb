@@ -1,0 +1,76 @@
+<% target = "#{side}#{symbol.gsub('.','')}" %>
+<%= link_to side.capitalize, "#", data: {toggle: :modal, target: ".#{target}"}, class: "btn btn-default", class: "stop-deferred-loader" %>
+
+<div class="modal fade <%= target %>" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><%= "#{side.capitalize} #{symbol}" %></h4>
+      </div>
+      <div id="order-form" data-behavior="OrderForm" data-side="<%= side %>" data-price="<%= set_num_decimals(price, delimiter: '') %>" class="order_form_<%= target %>">
+        <%= form_tag new_order_path, class: "form-inline" do %>
+          <%= hidden_field_tag :symbol, symbol %>
+          <%= hidden_field_tag :side, side %>
+
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <h5>Current price per share: <%= price_display price %></h5>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-xs-3">
+                <div class="form-group">
+                  <%= label_tag "Order type" %>
+                  <%= select_tag :type, options_for_select(["Market", "Limit", "Stop loss", "Stop limit"]), class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-xs-9">
+                <p class="order-description"></p>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <%= label_tag "Number of shares" %>
+                  <%= number_field_tag :quantity, 1, min: 1, class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <%= label_tag "Price" %>
+                  <%= number_field_tag :price, set_num_decimals(price, delimiter: ''), step: 0.01, min: 0.01, class: "form-control" %>
+                  <div class="market-placeholder">
+                    Best available
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <%= label_tag "Time in force" %>
+                  <%= select_tag :time_in_force, options_for_select([ ["Good for day", "gfd"], ["Good til canceled", "gtc"] ]), class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <%= label_tag "Stop price" %>
+                  <%= number_field_tag :stop_price, set_num_decimals(price, delimiter: ''), step: 0.01, min: 0.01, class: "form-control" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" data-dismiss="modal" type="button">Cancel</button>
+            <%= submit_tag "Place order", class: "btn btn-success", data: {confirm: "Are you sure you want to #{side} #{symbol}?"} %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

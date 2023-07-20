@@ -1,0 +1,68 @@
+@use 'variables';
+
+.side-menu {
+  width: inherit;
+  background-color: $dark-grey;
+  position: fixed;
+  height: 100%;
+
+  .logo {
+    height: 70px;
+    background-color: $green;
+
+    img {
+      width: 40px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      padding-top: 15px;
+    }
+  }
+
+  .main-menu {
+    #quote-form {
+      border-bottom: 1px solid $black;
+      margin-bottom: 15px;
+
+      .fa-search {
+        top: 23px;
+      }
+
+      .form-group {
+        margin: 0;
+        &::before {
+          font: var(--fa-font-solid);
+          content: "\f002";
+          position: relative;
+          display: block;
+          height:0;
+          top: 22px;
+          left: .75em;
+        }
+
+        input {
+          text-indent: 26px;
+          height: 60px;
+        }
+      }
+    }
+
+    .menu-item {
+      font-size: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 15px;
+
+      .active {
+        color: white;
+      }
+    }
+  }
+}
+
+// .login::before {
+//   /* using style CSS custom property */
+//   font: var(--fa-font-solid);
+//   content: "\f007";
+// }
